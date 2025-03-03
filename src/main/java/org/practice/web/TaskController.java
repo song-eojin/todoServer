@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.practice.constants.TaskStatus;
 import org.practice.model.TaskDto;
 import org.practice.service.TaskService;
+import org.practice.web.vo.ResultResponseVo;
 import org.practice.web.vo.TaskRequestVo;
 import org.practice.web.vo.TaskStatusRequestVo;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,17 @@ public class TaskController {
     public ResponseEntity<TaskDto> getOneTask(@PathVariable Long id) {
         var result = this.taskService.getOne(id);
         return ResponseEntity.ok(result);
+    }
+
+    /**
+     * 특정 id에 해당하는 할일 삭제
+     * @param id 삭제할 할일의 id
+     * @return 삭제 결과를 담은 응답 객체
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResultResponseVo> deleteTask(@PathVariable Long id) {
+        var result = this.taskService.delete(id);
+        return ResponseEntity.ok(new ResultResponseVo(result));
     }
 
     /**

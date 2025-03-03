@@ -55,6 +55,16 @@ public class TaskService {
         return this.entityToObject(entity);
     }
 
+    public boolean delete(Long id) {
+        try {
+            this.taskRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error("an error occurred while deleting [{}]", e.toString());
+            return false;
+        }
+        return true;
+    }
+
     public TaskDto update(Long id, String title, String description, LocalDate dueDate) {
         var exists = this.getById(id);
 
