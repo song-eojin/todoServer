@@ -2,6 +2,7 @@ package org.practice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.practice.constants.TaskStatus;
 import org.practice.model.TaskDto;
 import org.practice.persist.TaskRepository;
@@ -52,6 +53,26 @@ public class TaskService {
     public TaskDto getOne(Long id) {
         var entity = this.getById(id);
         return this.entityToObject(entity);
+    }
+
+    public TaskDto update(Long id, String title, String description, LocalDate dueDate) {
+        var exists = this.getById(id);
+
+        exists.setTitle(Strings.isEmpty(title) ?
+                exists.getTitle() : title);
+        exists.setDescription(Strings.isEmpty(description) ?
+                exists.getDescription() : description);
+
+        var updated = this.taskRepository.save(exists);
+        return this.entityToObject(updated);
+    }
+
+    public TaskDto updateStatus(Long id, TaskStatus status) {
+        var entity = this.getById(id);
+        entity.setStatus(status);
+
+        var saved = this.taskRepository.save(entity);
+        return this.entityToObject(saved);
     }
 
     private TaskEntity getById(Long id) {

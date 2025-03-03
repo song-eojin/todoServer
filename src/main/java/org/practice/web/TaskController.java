@@ -6,6 +6,7 @@ import org.practice.constants.TaskStatus;
 import org.practice.model.TaskDto;
 import org.practice.service.TaskService;
 import org.practice.web.vo.TaskRequestVo;
+import org.practice.web.vo.TaskStatusRequestVo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -69,5 +70,37 @@ public class TaskController {
     public ResponseEntity<TaskDto> getOneTask(@PathVariable Long id) {
         var result = this.taskService.getOne(id);
         return ResponseEntity.ok(result);
+    }
+
+    /**
+     * 특정 id에 해당하는 할일을 수정
+     * @param id 할일의 id
+     * @param task 수정할 할일의 정보
+     * @return 수정된 할일 객체
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable Long id,
+                                              @RequestBody TaskRequestVo task) {
+        var result = this.taskService.update(id, task.getTitle(), task.getDescription(), task.getDueDate());
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * 특정 id에 해당한는 할일의 상태 수정
+     * @param id
+     * @param req 수정된 할일의 상태 정보
+     * @return 수정된 할일 객체
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TaskDto> updateTaskStatus(@PathVariable Long id,
+                                                    @RequestBody TaskStatusRequestVo req) {
+        var result = this.taskService.updateStatus(id, req.getStatus());
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<TaskStatus[]> getAllStatus() {
+        var status = TaskStatus.values();
+        return ResponseEntity.ok(status);
     }
 }
