@@ -50,7 +50,6 @@ class TaskControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/tasks")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content("{{\"title\": \"test\", \"description\": \"test description\"}}"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\": 1, \"title\": \"test\", \"description\": \"test description\"}"))
                 .andReturn();
